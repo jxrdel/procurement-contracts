@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ExternalContact extends Model
+class Purchase extends Model
 {
     use HasFactory;
 
-    protected $table = 'external_contacts';
+    protected $table = 'purchases';
 
     protected $fillable = [
-        'fname',
-        'lname',
-        'email',
+        'name',
         'note',
-        'phone1',
-        'phone2',
         'is_active',
         'external_company_id',
     ];

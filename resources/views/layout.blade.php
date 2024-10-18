@@ -19,7 +19,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('icon2.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,6 +43,9 @@
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
+    <!-- Toasts -->
+    <script src="../assets/js/ui-toasts.js"></script>
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -50,6 +53,14 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body #toast-container > div {
+            opacity: 1;
+        }
+    </style>
   </head>
 
   <body>
@@ -102,8 +113,8 @@
               </ul>
             </li>
 
-            <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
+            <li @class(['menu-item', 'active' => request()->routeIs('purchases.*')])>
+                <a href="{{route('purchases.index')}}" class="menu-link">
                   <i class="menu-icon ri-money-dollar-box-line"></i>
                   <div data-i18n="Basic">Purchases</div>
                 </a>
@@ -292,6 +303,55 @@
 
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    
+    
+        window.addEventListener('show-message', event => {
+    
+                    toastr.options = {
+                        "progressBar" : true,
+                        "closeButton" : true,
+                    }
+                    toastr.success(event.detail.message,'' , {timeOut:3000});
+                })
+    window.addEventListener('scroll-to-top', event => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+    </script>
+    
+    
+    @if (Session::has('error'))
+  
+    <script>
+        toastr.options = {
+          "progressBar" : true,
+          "closeButton" : true,
+        }
+        toastr.error("{{ Session::get('error') }}",'' , {timeOut:6000});
+    </script>
+  
+    @endif
+  
+    
+    @if (Session::has('success'))
+  
+    <script>
+        toastr.options = {
+          "progressBar" : true,
+          "closeButton" : true,
+        }
+        toastr.success("{{ Session::get('success') }}",'' , {timeOut:3000});
+    </script>
+  
+    @endif
+
+    @yield('scripts')
 
   </body>
 </html>

@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('external_contacts', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('fname');
-            $table->string('lname');
-            $table->string('email');
+            $table->string('name');
             $table->string('note')->nullable();
-            $table->string('phone1')->nullable();
-            $table->string('phone2')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('external_company_id')->constrained('external_companies')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('external_contacts');
+        Schema::dropIfExists('purchases');
     }
 };
