@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    <title>External Contacts | Contracts</title>
+    <title>Purchases | Contracts</title>
 @endsection
 
 @section('content')
@@ -10,12 +10,12 @@
       <div class="card-body">
         
         <div class="d-sm-flex align-items-center justify-content-between mb-7">
-            <h1 class="h3 mb-0 text-gray-800" style="margin: auto"><strong><i style="font-size: 2rem" class="ri-user-search-fill"></i> &nbsp; External Contacts</strong></h1>
+            <h1 class="h3 mb-0 text-gray-800" style="margin: auto"><strong><i class="fa-solid fa-file-invoice-dollar"></i> &nbsp; Purchases</strong></h1>
         </div>
 
         <div class="row mb-8">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#createContactModal" class="btn btn-primary waves-effect waves-light w-25 m-auto">
-                <span class="tf-icons ri-user-add-fill me-1_5"></span>Create Contact
+            <a href="{{route('purchases.create')}}" class="btn btn-primary waves-effect waves-light w-25 m-auto">
+                <span class="ri-add-circle-line me-1_5"></span>Create Purchase
             </a>
         </div>
 

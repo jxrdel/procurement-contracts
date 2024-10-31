@@ -21,4 +21,9 @@ class ExternalCompany extends Model
         'phone2',
         'email',
     ];
+
+    public function contacts()
+    {
+        return $this->hasMany(ExternalContact::class);
+    }
 }
