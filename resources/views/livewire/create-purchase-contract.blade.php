@@ -9,7 +9,7 @@
             <div class="card-body">
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-5">
-                    <a href="{{ route('purchases.index') }}" class="btn btn-primary">
+                    <a href="{{ route('purchase-contracts.index') }}" class="btn btn-primary">
                         <i class="ri-arrow-left-circle-line me-1"></i> Back
                     </a>
                     <h1 class="h3 mb-0 text-gray-800" style="flex: 1; text-align: center;">
@@ -21,48 +21,27 @@
                 <div class="row mt-8">
 
                     <div class="col">
-                        <div class="form-floating form-floating-outline">
-                            <input autocomplete="off" wire:model="name" type="text"
-                                class="form-control @error('name')is-invalid @enderror" id="floatingInput"
-                                placeholder="Name of item to be purchased" aria-describedby="floatingInputHelp" />
-                            <label for="floatingInput">Name</label>
-                        </div>
-                        @error('name')
-                            <div class="text-danger"> {{ $message }} </div>
-                        @enderror
-                    </div>
-
-                    <div class="col">
                         <div class="form-floating form-floating-outline mb-6">
-                            <select wire:model="company" class="form-select @error('company')is-invalid @enderror"
+                            <select wire:model="purchase_id"
+                                class="form-select @error('purchase_id')is-invalid @enderror"
                                 id="exampleFormControlSelect1" aria-label="Default select example">
-                                <option value="" selected>Select a Company</option>
-                                @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                <option value="" selected>Select a Purchase</option>
+                                @foreach ($purchases as $purchase)
+                                    <option value="{{ $purchase->id }}">{{ $purchase->name }}</option>
                                 @endforeach
                             </select>
-                            <label for="exampleFormControlSelect1">Company</label>
-                            @error('company')
+                            <label for="exampleFormControlSelect1">Purchase</label>
+                            @error('purchase_id')
                                 <div class="text-danger"> {{ $message }} </div>
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col">
+                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="form-floating form-floating-outline">
-                        <input autocomplete="off" wire:model="note" type="text"
-                            class="form-control @error('note')is-invalid @enderror" id="floatingInput"
-                            placeholder="Notes..." aria-describedby="floatingInputHelp" />
-                        <label for="floatingInput">Notes</label>
-                    </div>
-                    @error('note')
-                        <div class="text-danger"> {{ $message }} </div>
-                    @enderror
-                </div>
-
-
-                <div class="row mt-8">
 
                     <div class="col">
                         <div class="form-floating form-floating-outline">
@@ -164,12 +143,12 @@
 
                     <div class="col">
                         <div class="form-floating form-floating-outline">
-                            <input autocomplete="off" wire:model="contratnote" type="text"
-                                class="form-control @error('contratnote')is-invalid @enderror" id="floatingInput"
+                            <input autocomplete="off" wire:model="note" type="text"
+                                class="form-control @error('note')is-invalid @enderror" id="floatingInput"
                                 placeholder="Notes..." aria-describedby="floatingInputHelp" />
                             <label for="floatingInput">Notes</label>
                         </div>
-                        @error('contratnote')
+                        @error('note')
                             <div class="text-danger"> {{ $message }} </div>
                         @enderror
                     </div>
@@ -212,6 +191,16 @@
                     </div>
                 </div>
 
+                {{-- <div class="row" style="margin-top: 30px">
+                    <div class="col" style="text-align: center;padding-bottom:10px">
+
+                        <label for="title">Add Notification &nbsp;</label>
+                        <input wire:model="notification_date" type="date" class="form-control"
+                            style="display: inline;width: 400px">
+                        <button wire:click.prevent="addNotification()" class="btn btn-primary"
+                            style="width: 12rem"><i class="fas fa-plus me-2"></i> Add Notification</button>
+                    </div>
+                </div> --}}
                 <div class="row mt-4">
                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#addNotificationModal"
                         class="btn btn-primary waves-effect waves-light w-25 m-auto">
@@ -219,7 +208,7 @@
                     </a>
                 </div>
 
-                <div class="row mt-2">
+                <div class="row mt-4">
                     <table id="notiTable" class="table table-hover table-bordered" style="width: 90%; margin:auto">
                         <thead>
                             <tr>
@@ -231,6 +220,7 @@
                             @forelse ($this->notifications as $index => $notification)
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($notification['display_date'])->format('F jS, Y') }}
+                                    </td>
                                     <td style="text-align: center"><button
                                             wire:click="removeNotification({{ $index }})" type="button"
                                             class="btn btn-outline-danger"><i class="ri-delete-bin-fill"></i></button>
@@ -275,6 +265,10 @@
                 $wire.set('notifiedusers', selectedValues); // Pass selected values to Livewire
             });
 
+            window.addEventListener('close-notification-modal', event => {
+                $('#addNotificationModal').modal('hide');
+            })
+
             $wire.on('scrollToError', () => {
                 // Wait for Livewire to finish rendering the error fields
                 setTimeout(() => {
@@ -288,10 +282,6 @@
                     }
                 }, 100); // Adding a small delay (100ms) before scrolling
             });
-
-            window.addEventListener('close-notification-modal', event => {
-                $('#addNotificationModal').modal('hide');
-            })
             $wire.on('preserveScroll', () => {
                 // You can store the current scroll position before the update
                 const scrollY = window.scrollY;

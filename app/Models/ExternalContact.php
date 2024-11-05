@@ -21,4 +21,9 @@ class ExternalContact extends Model
         'is_active',
         'external_company_id',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(ExternalCompany::class, 'external_company_id');
+    }
 }

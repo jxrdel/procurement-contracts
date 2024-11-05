@@ -1,55 +1,37 @@
 @extends('layout')
 
 @section('title')
-    <title>External Companies | Contracts</title>
+    <title>Purchases | Contracts</title>
 @endsection
 
 @section('content')
+    @livewire('create-external-contact-modal')
     <div class="card">
         <div class="card-body">
 
             <div class="d-sm-flex align-items-center justify-content-between mb-7">
-                <h1 class="h3 mb-0 text-gray-800" style="margin: auto"><strong><i
-                            class="fa-solid fa-building-circle-check"></i> &nbsp; External Companies</strong></h1>
+                <h1 class="h3 mb-0 text-gray-800" style="margin: auto"><strong><i class="fa-solid fa-file-invoice-dollar"></i>
+                        &nbsp; Purchase Contracts</strong></h1>
             </div>
 
             <div class="row mb-8">
-                <a href="{{ route('external-companies.create') }}"
+                <a href="{{ route('purchase-contracts.create') }}"
                     class="btn btn-primary waves-effect waves-light w-25 m-auto">
-                    <span class="tf-icons ri-add-circle-line me-1_5"></span>Create Company
+                    <span class="ri-add-circle-line me-1_5"></span>Create Purchase Contract
                 </a>
             </div>
+
+
             <table id="myTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th style="width: 20%">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @forelse ($companies as $company)
-                        <tr>
-                            <td>{{ $company->name }}</td>
-                            <td>{{ $company->phone1 }}</td>
-                            <td>{{ $company->email }}</td>
-                            <td class="text-center">
-
-                                <a href="#" type="button" class="btn btn-primary">
-                                    <i class="ri-eye-line me-1"></i>
-                                </a>
-
-                                <a href="#" type="button" class="btn btn-danger">
-                                    <i class="ri-delete-bin-2-line me-1"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">No external companies added</td>
-                        </tr>
-                    @endforelse
                 </tbody>
             </table>
 
@@ -68,27 +50,27 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ route('getexternalcompanies') }}",
+                    "url": "{{ route('getpurchasecontracts') }}",
                     "type": "GET"
                 },
                 "columns": [{
-                        data: 'name',
-                        name: 'name'
+                        data: 'purchase.name',
+                        name: 'purchase.name'
                     },
                     {
-                        data: 'phone1',
-                        name: 'phone1'
+                        data: 'start_date',
+                        name: 'start_date'
                     },
                     {
-                        data: 'email',
-                        name: 'phone1'
+                        data: 'end_date',
+                        name: 'end_date'
                     },
                     {
                         data: null,
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            return ' <div style="text-align:center"><a class="btn btn-primary" href="/external-companies/view/' +
+                            return ' <div style="text-align:center"><a class="btn btn-primary" href="/purchase-contracts/view/' +
                                 data.id +
                                 '" ><i class="ri-eye-line me-1"></i></a> <a class="btn btn-danger" href="#" onclick="showDelete(' +
                                 data.id + ')"><i class="ri-delete-bin-2-line me-1"></i></a></div>';
@@ -97,5 +79,13 @@
                 ]
             });
         });
+
+        window.addEventListener('refresh-table', event => {
+            $('#myTable').DataTable().ajax.reload();
+        })
+
+        window.addEventListener('close-create-modal', event => {
+            $('#createContactModal').modal('hide');
+        })
     </script>
 @endsection

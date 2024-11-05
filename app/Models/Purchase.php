@@ -17,4 +17,14 @@ class Purchase extends Model
         'is_active',
         'external_company_id',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(ExternalCompany::class, 'external_company_id');
+    }
+
+    public function contracts()
+    {
+        return $this->hasMany(PurchaseContract::class);
+    }
 }

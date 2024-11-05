@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('purchase_contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
-            $table->string('filenumber')->nullable();
-            $table->string('filename')->nullable();
+            $table->string('file_number')->nullable();
+            $table->string('file_name')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('note')->nullable();
