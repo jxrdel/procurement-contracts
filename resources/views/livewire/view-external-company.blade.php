@@ -9,8 +9,7 @@
                         <i class="ri-arrow-left-circle-line me-1"></i> Back
                     </a>
                     <h1 class="h3 mb-0 text-gray-800" style="flex: 1; text-align: center;">
-                        <strong style="margin-right: 90px"><i
-                                class="ri-hotel-fill fs-3"></i>{{ $this->name }}</strong>
+                        <strong style="margin-right: 90px">{{ $this->name }}</strong>
                     </h1>
                 </div>
 
@@ -160,7 +159,7 @@
                         <div class="col">
                             <div class="form-check form-switch mb-2">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-                                    wire:model="is_active" checked />
+                                    wire:model="is_active" />
                                 <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
                             </div>
                         </div>
@@ -179,6 +178,52 @@
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div class="divider" style="margin-top: 40px">
+                    <div class="divider-text">
+                        <i class="fa-solid fa-file-pen fs-5"></i>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+
+                    <h3 class="mb-0 text-gray-800 text-center">
+                        <strong>Contracts</strong>
+                    </h3>
+                </div>
+
+                <div class="row mt-8">
+                    <table class="table table-hover table-bordered w-100">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            @forelse ($contracts as $index => $contract)
+                                <tr>
+                                    <td>{{ $contract->purchase->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($contract->start_date)->format('d/m/Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}</td>
+                                    <td class="text-center">
+
+                                        <a href="{{ route('purchase-contracts.view', $contract->id) }}"
+                                            target="_blank" class="btn btn-primary">
+                                            <i class="ri-eye-fill me-1"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No contracts added</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="divider" style="margin-top: 40px">

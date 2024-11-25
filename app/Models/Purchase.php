@@ -16,6 +16,8 @@ class Purchase extends Model
         'note',
         'is_active',
         'external_company_id',
+        'created_by',
+        'updated_by',
     ];
 
     public function company()

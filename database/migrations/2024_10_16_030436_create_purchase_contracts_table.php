@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->string('cost')->nullable();
             $table->boolean('is_continuous')->default(false);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->boolean('is_custom_notification')->default(false);
             $table->string('message')->nullable();
             $table->foreignId('purchase_contract_id')->constrained('purchase_contracts')->onDelete('cascade');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

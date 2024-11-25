@@ -20,6 +20,8 @@ class ExternalContact extends Model
         'phone2',
         'is_active',
         'external_company_id',
+        'created_by',
+        'updated_by',
     ];
 
     public function company()

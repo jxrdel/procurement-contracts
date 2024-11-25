@@ -41,6 +41,13 @@
 
 @section('scripts')
     <script>
+        var userCanDelete =
+            @can('delete-records')
+                true
+            @else
+                false
+            @endcan ;
+
         $(document).ready(function() {
             $('#myTable').DataTable({
                 "pageLength": 10,
@@ -70,10 +77,14 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            return ' <div style="text-align:center"><a class="btn btn-primary" href="/purchase-contracts/view/' +
-                                data.id +
-                                '" ><i class="ri-eye-line me-1"></i></a> <a class="btn btn-danger" href="#" onclick="showDelete(' +
-                                data.id + ')"><i class="ri-delete-bin-2-line me-1"></i></a></div>';
+                            var deleteButton = '';
+                            if (userCanDelete) { // Check if user can delete
+                                deleteButton =
+                                    '<a class="btn btn-danger" href="#" onclick="showDelete(' + data
+                                    .id + ')"><i class="ri-delete-bin-2-line me-1"></i></a>';
+                            }
+                            return '<div style="text-align:center;"><a class="btn btn-primary" href="/purchase-contracts/view/' +
+                                data.id + '" >View</a> ' + deleteButton + '</div>';
                         }
                     },
                 ]

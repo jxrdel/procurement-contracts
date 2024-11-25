@@ -144,6 +144,15 @@
                             <div data-i18n="Basic">Notifications</div>
                         </a>
                     </li>
+
+                    @can('view-users-page')
+                        <li @class(['menu-item', 'active' => request()->routeIs('users')])>
+                            <a href="{{ route('users') }}" class="menu-link">
+                                <i class="menu-icon ri-user-line"></i>
+                                <div data-i18n="Basic">Users</div>
+                            </a>
+                        </li>
+                    @endcan
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -168,7 +177,8 @@
                                 <a class="github-button"
                                     href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/materio-bootstrap-html-admin-template-free on GitHub">Guest</a>
+                                    aria-label="Star themeselection/materio-bootstrap-html-admin-template-free on GitHub">{{ Auth::user()->fname }}
+                                    {{ Auth::user()->lname }}</a>
                             </li>
 
                             <!-- User -->
@@ -191,43 +201,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0 small">John Doe</h6>
-                                                    <small class="text-muted">Admin</small>
+                                                    <h6 class="mb-0 small">{{ Auth::user()->fname }}
+                                                        {{ Auth::user()->lname }}</h6>
+                                                    <small class="text-muted">Online</small>
                                                 </div>
                                             </div>
                                         </a>
                                     </li>
                                     <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="ri-user-3-line ri-22px me-2"></i>
-                                            <span class="align-middle">My Profile</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="ri-settings-4-line ri-22px me-2"></i>
-                                            <span class="align-middle">Settings</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <span class="d-flex align-items-center align-middle">
-                                                <i class="flex-shrink-0 ri-file-text-line ri-22px me-3"></i>
-                                                <span class="flex-grow-1 align-middle">Billing</span>
-                                                <span
-                                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger h-px-20 d-flex align-items-center justify-content-center">4</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
                                         <div class="d-grid px-4 pt-2 pb-1">
-                                            <a class="btn btn-danger d-flex" href="javascript:void(0);">
+                                            <a class="btn btn-danger d-flex" href="{{ route('logout') }}">
                                                 <small class="align-middle">Logout</small>
                                                 <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
                                             </a>

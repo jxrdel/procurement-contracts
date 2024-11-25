@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
 
 class Controller
@@ -10,6 +13,12 @@ class Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 
     public function notifications()
@@ -28,6 +37,24 @@ class Controller
             })
             ->addColumn('display_date', function ($notification) {
                 return $notification->display_date;
+            })
+            ->make(true);
+    }
+
+    public function users()
+    {
+        Gate::authorize('view-users-page');
+        return view('users');
+    }
+
+    public function getUsers()
+    {
+        Gate::authorize('view-users-page');
+        $users = User::with('role')->get();
+
+        return DataTables::of($users)
+            ->addColumn('role_name', function ($user) {
+                return $user->role ? $user->role->name : 'N/A';
             })
             ->make(true);
     }

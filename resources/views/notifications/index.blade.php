@@ -72,8 +72,7 @@
                         render: function(data, type, row) {
                             return '<div style="text-align:center"><a class="btn btn-primary" href="javascript:void(0);" onclick="showView(' +
                                 data.id +
-                                ')"><i class="ri-eye-line me-1"></i></a> <a class="btn btn-danger" href="#" onclick="showDelete(' +
-                                data.id + ')"><i class="ri-delete-bin-2-line me-1"></i></a></div>';
+                                ')">View</a></div>';
                         }
                     }
                 ]

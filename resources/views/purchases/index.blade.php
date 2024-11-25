@@ -6,6 +6,7 @@
 
 @section('content')
     @livewire('create-external-contact-modal')
+    @livewire('delete-record-modal')
     <div class="card">
         <div class="card-body">
 
@@ -39,6 +40,13 @@
 
 @section('scripts')
     <script>
+        var userCanDelete =
+            @can('delete-records')
+                true
+            @else
+                false
+            @endcan ;
+
         $(document).ready(function() {
             $('#myTable').DataTable({
                 "pageLength": 10,
@@ -64,10 +72,14 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            return ' <div style="text-align:center"><a class="btn btn-primary" href="/purchases/view/' +
-                                data.id +
-                                '" ><i class="ri-eye-line me-1"></i></a> <a class="btn btn-danger" href="#" onclick="showDelete(' +
-                                data.id + ')"><i class="ri-delete-bin-2-line me-1"></i></a></div>';
+                            var deleteButton = '';
+                            if (userCanDelete) { // Check if user can delete
+                                deleteButton =
+                                    '<a class="btn btn-danger" href="#" onclick="showDelete(' + data
+                                    .id + ')"><i class="ri-delete-bin-2-line me-1"></i></a>';
+                            }
+                            return '<div style="text-align:center;"><a class="btn btn-primary" href="/purchases/view/' +
+                                data.id + '" >View</a> ' + deleteButton + '</div>';
                         }
                     },
                 ]
@@ -80,6 +92,21 @@
 
         window.addEventListener('close-create-modal', event => {
             $('#createContactModal').modal('hide');
+        })
+
+        function showDelete(id) {
+            Livewire.dispatch('show-delete-modal', {
+                model: 'Purchase',
+                id: id
+            });
+        }
+
+        window.addEventListener('display-delete-modal', event => {
+            $('#deleteRecordModal').modal('show');
+        })
+
+        window.addEventListener('close-delete-modal', event => {
+            $('#deleteRecordModal').modal('hide');
         })
     </script>
 @endsection

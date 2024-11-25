@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ExternalCompany;
 use App\Models\ExternalContact;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -66,6 +67,7 @@ class EditExternalContactModal extends Component
             'note' => $this->note,
             'is_active' => $this->is_active,
             'external_company_id' => $this->company,
+            'updated_by' => Auth::user()->username,
         ]);
 
         $this->dispatch('close-edit-modal');

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ExternalCompany;
 use App\Models\Purchase;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ViewPurchase extends Component
@@ -48,6 +49,7 @@ class ViewPurchase extends Component
             'note' => $this->note,
             'is_active' => $this->is_active,
             'external_company_id' => $this->company,
+            'updated_by' => Auth::user()->username,
         ]);
 
         $this->isEditing = false;

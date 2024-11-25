@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ExternalCompany;
 use App\Models\ExternalContact;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CreateExternalContactModal extends Component
@@ -19,7 +20,8 @@ class CreateExternalContactModal extends Component
 
     public $companies;
 
-    public function mount(){
+    public function mount()
+    {
         $this->companies = ExternalCompany::all();
     }
 
@@ -28,8 +30,9 @@ class CreateExternalContactModal extends Component
         return view('livewire.create-external-contact-modal');
     }
 
-    public function createContact(){
-        
+    public function createContact()
+    {
+
         ExternalContact::create([
             'fname' => $this->firstname,
             'lname' => $this->lastname,
@@ -39,6 +42,7 @@ class CreateExternalContactModal extends Component
             'note' => $this->note,
             'is_active' => $this->isactive,
             'external_company_id' => $this->company,
+            'created_by' => Auth::user()->username,
         ]);
 
         $this->firstname = null;

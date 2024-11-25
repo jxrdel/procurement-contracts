@@ -3,12 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\ExternalCompany;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CreateExternalCompany extends Component
 {
-    #[Title('Create External Company')] 
+    #[Title('Create External Company')]
 
     public $name;
     public $email;
@@ -45,7 +46,7 @@ class CreateExternalCompany extends Component
             'address1' => 'required',
             'phone1' => 'required',
         ]);
-        
+
         $newcompany = ExternalCompany::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -55,6 +56,7 @@ class CreateExternalCompany extends Component
             'phone2' => $this->phone2,
             'note' => $this->note,
             'isactive' => $this->isactive,
+            'created_by' => Auth::user()->username,
         ]);
 
         foreach ($this->contacts as $contact) {
@@ -66,6 +68,7 @@ class CreateExternalCompany extends Component
                 'phone2' => $contact['contactphone2'],
                 'note' => $contact['contactnote'],
                 'is_active' => $contact['contactisactive'],
+                'created_by' => Auth::user()->username,
             ]);
         }
 

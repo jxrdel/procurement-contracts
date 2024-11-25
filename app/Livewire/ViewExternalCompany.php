@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\ExternalCompany;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -31,6 +32,7 @@ class ViewExternalCompany extends Component
 
     public $contacts = [];
     public $isEditing = false;
+    public $contracts;
 
     public function render()
     {
@@ -48,7 +50,8 @@ class ViewExternalCompany extends Component
         $this->phone1 = $this->company->phone1;
         $this->phone2 = $this->company->phone2;
         $this->note = $this->company->note;
-        $this->is_active = $this->company->is_active;
+        $this->is_active = $this->company->is_active == 1 ? true : false;
+        $this->contracts = $this->company->contracts;
     }
 
     public function save()
@@ -69,6 +72,7 @@ class ViewExternalCompany extends Component
             'phone2' => $this->phone2,
             'note' => $this->note,
             'is_active' => $this->is_active,
+            'updated_by' => Auth::user()->username,
         ]);
 
         $this->isEditing = false;
@@ -92,6 +96,7 @@ class ViewExternalCompany extends Component
             'phone2' => $this->contactphone2,
             'note' => $this->contactnote,
             'is_active' => $this->contactisactive,
+            'created_by' => Auth::user()->username,
         ]);
 
         $this->firstname = null;

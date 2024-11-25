@@ -89,11 +89,11 @@
 
                     <div class="col">
                         <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
-                            <input wire:model.live="contract_type" value="continuous" type="radio" class="btn-check"
-                                name="btnradio" id="btnradioContinuous" checked />
+                            <input disabled wire:model.live="contract_type" value="continuous" type="radio"
+                                class="btn-check" name="btnradio" id="btnradioContinuous" checked />
                             <label class="btn btn-outline-primary" for="btnradioContinuous">Continuous </label>
-                            <input wire:model.live="contract_type" value="expires" type="radio" class="btn-check"
-                                name="btnradio" id="btnradioExpires" />
+                            <input disabled wire:model.live="contract_type" value="expires" type="radio"
+                                class="btn-check" name="btnradio" id="btnradioExpires" />
                             <label class="btn btn-outline-primary" for="btnradioExpires">Expires</label>
                         </div>
                     </div>
@@ -236,12 +236,79 @@
                     </table>
                 </div>
 
+
+                <div class="divider" style="margin-top: 40px">
+                    <div class="divider-text">
+                        <i class="fa-solid fa-file-arrow-up fs-4"></i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="text-center fw-bold">File Uploads</h4>
+                </div>
+
+
+                <div class="row">
+                    <div class="col" style="text-align: center;padding-bottom:10px">
+                        @error('upload')
+                            <div class="text-danger fw-bold"> {{ $message }} </div>
+                        @enderror
+
+                        <input wire:model="upload" type="file" class="form-control"
+                            style="display: inline;width: 400px;height:45px">
+                        <button wire:click.prevent="uploadFile()" class="btn btn-primary"
+                            wire:loading.attr="disabled" wire:target="upload" style="width: 8rem"><i
+                                class="fas fa-plus me-2"></i> Upload</button>
+                        <span wire:loading wire:target="upload">Uploading...</span>
+                    </div>
+                </div>
+
+                <div class="row ">
+
+                    <div class="demo-inline-spacing d-flex justify-content-center align-items-center">
+                        <div class="list-group list-group-flush" style="width: 500px">
+
+                            @forelse ($uploads as $upload)
+                                <div class="list-group list-group-flush list-group-item-action"
+                                    style="width: 100%;cursor: default;">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center"
+                                        style="border: none;">
+                                        <a class="text-dark text-decoration-underline"
+                                            href="{{ Storage::url($upload->file_path) }}"
+                                            target="_blank">{{ $upload->file_name }}</a>
+                                        {{-- <button type="button" class="btn btn-danger">
+                                                <i class="ri-delete-bin-2-line me-1"></i> Delete
+                                            </button> --}}
+                                        <a href="javascript:void(0)"
+                                            wire:confirm="Are you sure you want to delete this file?"
+                                            wire:click="deleteFile({{ $upload->id }})">
+                                            <i class="ri-close-large-line text-danger fw-bold"></i>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="list-group list-group-flush list-group-item-action"
+                                    style="width: 100%;cursor: default;">
+                                    <div class="list-group-item" style="border: none;">
+                                        <p class="text-center">No files uploaded</p>
+
+                                    </div>
+                                </div>
+                            @endforelse
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mt-8">
                     <button wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light m-auto"
                         style="width: 100px">
                         <span class="tf-icons ri-save-3-line me-1_5"></span>Save
                     </button>
                 </div>
+
+
             </div>
         </div>
     </form>

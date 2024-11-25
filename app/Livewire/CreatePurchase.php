@@ -7,11 +7,15 @@ use App\Models\ExternalContact;
 use App\Models\Purchase;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreatePurchase extends Component
 {
+    use WithFileUploads;
+
     #[Title('Create Purchase')]
 
     public $name;
@@ -79,6 +83,7 @@ class CreatePurchase extends Component
             'note' => $this->note,
             'is_active' => $this->is_active,
             'external_company_id' => $this->company,
+            'created_by' => Auth::user()->username,
         ]);
 
         $newcontract = $newpurchase->contracts()->create([
@@ -89,6 +94,7 @@ class CreatePurchase extends Component
             'note' => $this->contratnote,
             'cost' => $this->cost,
             'is_continuous' => $this->is_continuous,
+            'created_by' => Auth::user()->username,
         ]);
 
         $newcontract->assignedTo()->attach($this->assigned_to);
@@ -97,6 +103,18 @@ class CreatePurchase extends Component
             $newnotification = $newcontract->notifications()->create($notification);
 
             $newnotification->notifiedUsers()->attach($this->notifiedusers);
+        }
+
+        if (!is_null($this->uploads)) {
+            foreach ($this->uploads as $photo) {
+                $filename = $photo->getClientOriginalName();
+                $path = $photo->store('file_uploads', 'public');
+                $newcontract->fileUploads()->create([
+                    'file_name' => $filename,
+                    'file_path' => $path,
+                    'uploaded_by' => Auth::user()->username,
+                ]);
+            }
         }
 
         return redirect()->route('purchases.index')->with('success', 'Purchase created successfully');
@@ -124,7 +142,9 @@ class CreatePurchase extends Component
             'display_date' => $this->notification_date,
             'is_custom_notification' => $this->is_custom_notification,
             'message' => $this->notification_message,
+            'created_by' => Auth::user()->username,
         ];
+
         $this->notification_date = null;
         $this->is_custom_notification = false;
         $this->notification_message = null;
@@ -139,8 +159,13 @@ class CreatePurchase extends Component
         $this->dispatch('preserveScroll');
     }
 
+
     public function updating($name, $value)
     {
-        $this->dispatch('preserveScroll');
+        if ($name == 'assigned_to' || $name == 'notifiedusers' || $name == 'uploads' || $name == 'contract_type') {
+            $this->skipRender();
+        } else {
+            $this->dispatch('preserveScroll');
+        }
     }
 }

@@ -18,6 +18,8 @@ class PurchaseContract extends Model
         'note',
         'cost',
         'is_continuous',
+        'created_by',
+        'updated_by',
     ];
 
     public function purchase()
@@ -33,5 +35,10 @@ class PurchaseContract extends Model
     public function assignedTo()
     {
         return $this->belongsToMany(User::class, 'user_purchasecontracts', 'purchase_contract_id', 'user_id');
+    }
+
+    public function fileUploads()
+    {
+        return $this->hasMany(FileUpload::class);
     }
 }

@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('lname');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->unsignedBigInteger('role_id');
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
 
         Schema::create('sessions', function (Blueprint $table) {

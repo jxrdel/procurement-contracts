@@ -5,11 +5,15 @@ namespace App\Livewire;
 use App\Models\Purchase;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreatePurchaseContract extends Component
 {
+    use WithFileUploads;
+
     #[Title('Create Purchase Contract')]
 
     public $purchase_id;
@@ -29,6 +33,8 @@ class CreatePurchaseContract extends Component
     public $notifications = [];
     public $is_custom_notification = false;
     public $notification_message;
+
+    public $uploads;
 
     public function mount()
     {
@@ -67,7 +73,7 @@ class CreatePurchaseContract extends Component
 
         $purchase = Purchase::find($this->purchase_id);
 
-        $newpurchase = $purchase->contracts()->create([
+        $newcontract = $purchase->contracts()->create([
             'file_number' => $this->file_number,
             'file_name' => $this->file_name,
             'contract_type' => $this->contract_type,
@@ -80,14 +86,28 @@ class CreatePurchaseContract extends Component
             'notifiedusers' => $this->notifiedusers,
             'notification_date' => $this->notification_date,
             'notifications' => $this->notifications,
+            'created_by' => Auth::user()->username,
         ]);
 
-        $newpurchase->assignedTo()->attach($this->assigned_to);
+        $newcontract->assignedTo()->attach($this->assigned_to);
 
         foreach ($this->notifications as $notification) {
-            $newnotification = $newpurchase->notifications()->create($notification);
+            $newnotification = $newcontract->notifications()->create($notification);
 
             $newnotification->notifiedUsers()->attach($this->notifiedusers);
+        }
+
+
+        if (!is_null($this->uploads)) {
+            foreach ($this->uploads as $photo) {
+                $filename = $photo->getClientOriginalName();
+                $path = $photo->store('file_uploads', 'public');
+                $newcontract->fileUploads()->create([
+                    'file_name' => $filename,
+                    'file_path' => $path,
+                    'uploaded_by' => Auth::user()->username,
+                ]);
+            }
         }
 
         return redirect()->route('purchase-contracts.index')->with('success', 'Purchase contract created successfully');
@@ -115,6 +135,7 @@ class CreatePurchaseContract extends Component
             'display_date' => $this->notification_date,
             'is_custom_notification' => $this->is_custom_notification,
             'message' => $this->notification_message,
+            'created_by' => Auth::user()->username,
         ];
         $this->notification_date = null;
         $this->is_custom_notification = false;
@@ -132,6 +153,10 @@ class CreatePurchaseContract extends Component
 
     public function updating($name, $value)
     {
-        $this->dispatch('preserveScroll');
+        if ($name == 'assigned_to' || $name == 'notifiedusers' || $name == 'uploads') {
+            $this->skipRender();
+        } else {
+            $this->dispatch('preserveScroll');
+        }
     }
 }

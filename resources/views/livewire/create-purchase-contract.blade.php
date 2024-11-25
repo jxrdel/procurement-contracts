@@ -235,6 +235,30 @@
                     </table>
                 </div>
 
+
+                <div class="divider" style="margin-top: 40px">
+                    <div class="divider-text">
+                        <i class="fa-solid fa-file-arrow-up fs-4"></i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="text-center fw-bold">File Uploads</h4>
+                </div>
+
+
+                <div class="row">
+                    <div class="col" style="text-align: center;padding-bottom:10px">
+                        @error('uploads')
+                            <div class="text-danger fw-bold"> {{ $message }} </div>
+                        @enderror
+
+                        <input wire:model="uploads" type="file" multiple class="form-control"
+                            style="display: inline;width: 400px;height:45px">
+                        <span wire:loading wire:target="uploads">Uploading...</span>
+                    </div>
+                </div>
+
                 <div class="row mt-8">
                     <button wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light m-auto"
                         style="width: 100px">

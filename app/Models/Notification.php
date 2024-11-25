@@ -14,6 +14,8 @@ class Notification extends Model
         'is_custom_notification',
         'message',
         'purchase_contract_id',
+        'created_by',
+        'updated_by',
     ];
 
     public function purchaseContract()

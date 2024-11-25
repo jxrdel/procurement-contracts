@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('external_company_id')->constrained('external_companies')->onDelete('cascade');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

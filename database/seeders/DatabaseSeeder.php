@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ExternalCompany;
 use App\Models\ExternalContact;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+
+        $roles = [
+            ['name' => 'Super Admin'],
+            ['name' => 'Admin'],
+            ['name' => 'User'],
+        ];
+
+        foreach ($roles as $role) {
+            Role::create($role);
+        }
 
         $users = [
             [
@@ -23,18 +33,21 @@ class DatabaseSeeder extends Seeder
                 'lname' => 'Regis',
                 'username' => 'jardel.regis',
                 'email' => 'jardel.regis@health.gov.tt',
+                'role_id' => 1,
             ],
             [
                 'fname' => 'Varma',
                 'lname' => 'Maharaj',
                 'username' => 'varma.maharaj',
                 'email' => 'varma.maharaj@health.gov.tt',
+                'role_id' => 1,
             ],
             [
                 'fname' => 'Stephen',
                 'lname' => 'Clarke',
                 'username' => 'stephen.clarke',
                 'email' => 'stephen.clarke@health.gov.tt',
+                'role_id' => 1,
             ],
         ];
 

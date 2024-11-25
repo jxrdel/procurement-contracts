@@ -2,16 +2,23 @@
 
 namespace App\Livewire;
 
+use App\Models\FileUpload;
 use App\Models\Purchase;
 use App\Models\PurchaseContract;
 use App\Models\User;
 use Carbon\Carbon;
+use Faker\Core\File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ViewPurchaseContract extends Component
 {
-    #[Title('Create Purchase Contract')]
+    use WithFileUploads;
+
+    #[Title('View Purchase Contract')]
 
     public $contract;
     public $purchase_id;
@@ -38,6 +45,9 @@ class ViewPurchaseContract extends Component
     public $isEditedNotifiedUsers = false;
 
     public $deletedNotifications = [];
+
+    public $upload;
+    public $uploads;
 
     public function mount($id)
     {
@@ -67,6 +77,7 @@ class ViewPurchaseContract extends Component
 
     public function render()
     {
+        $this->uploads = $this->contract->fileUploads()->get();
         return view('livewire.view-purchase-contract');
     }
 
@@ -84,6 +95,7 @@ class ViewPurchaseContract extends Component
             'note' => $this->note,
             'cost' => $this->cost,
             'is_continuous' => $this->is_continuous,
+            'updated_by' => Auth::user()->username,
         ]);
 
         // Sync associated employees
@@ -141,6 +153,7 @@ class ViewPurchaseContract extends Component
             'display_date' => $this->notification_date,
             'is_custom_notification' => $this->is_custom_notification,
             'message' => $this->notification_message,
+            'created_by' => Auth::user()->username,
         ];
         $this->notification_date = null;
         $this->is_custom_notification = false;
@@ -152,7 +165,11 @@ class ViewPurchaseContract extends Component
 
     public function updating($name, $value)
     {
-        $this->dispatch('preserveScroll');
+        if ($name == 'editedAssignedTo' || $name == 'editedNotifiedUsers' || $name == 'upload') {
+            $this->skipRender();
+        } else {
+            $this->dispatch('preserveScroll');
+        }
     }
 
     public function removeNotification($index)
@@ -160,5 +177,41 @@ class ViewPurchaseContract extends Component
         $this->deletedNotifications[] = $this->notifications[$index]['id'];
         unset($this->notifications[$index]);
         $this->dispatch('preserveScroll');
+    }
+    public function uploadFile()
+    {
+
+        $this->validate([
+            'upload' => 'required|file|max:1024',
+        ], [
+            'upload.required' => 'Please upload a file before proceeding.',
+            'upload.max' => 'The file must not be larger than 1MB.',
+        ]);
+        $filename = $this->upload->getClientOriginalName();
+
+        $path = $this->upload->store('file_uploads', 'public');
+        $this->contract->fileUploads()->create([
+            'file_name' => $filename,
+            'file_path' => $path,
+            'uploaded_by' => Auth::user()->username,
+        ]);
+
+        $this->upload = null;
+        $this->contract = $this->contract->fresh();
+        $this->dispatch('show-message', message: 'File uploaded successfully');
+        $this->dispatch('preserveScroll');
+    }
+
+    public function deleteFile($id)
+    {
+        $file = FileUpload::find($id);
+
+        if ($file) {
+            $file->delete();
+        }
+
+        $this->dispatch('preserveScroll');
+
+        $this->dispatch('show-message', message: 'File deleted successfully');
     }
 }
