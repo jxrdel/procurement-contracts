@@ -41,7 +41,7 @@ class CreateExternalCompany extends Component
     {
 
         $this->validate([
-            'name' => 'required',
+            'name' => 'required|unique:external_companies,name',
             'email' => 'required|email',
             'address1' => 'required',
             'phone1' => 'required',

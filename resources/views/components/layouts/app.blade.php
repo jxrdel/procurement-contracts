@@ -186,8 +186,12 @@
                                 <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        @if (Auth::user()->role->name == 'Super Admin')
+                                            <img src="{{ asset('assets/img/avatars/vader.png') }}" alt
+                                                class="w-px-40 h-auto rounded-circle" />
+                                        @else
+                                            <i class="fa-regular fa-circle-user fs-2"></i>
+                                        @endif
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
@@ -196,8 +200,12 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-2">
                                                     <div class="avatar avatar-online">
-                                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt
-                                                            class="w-px-40 h-auto rounded-circle" />
+                                                        @if (Auth::user()->role->name == 'Super Admin')
+                                                            <img src="{{ asset('assets/img/avatars/vader.png') }}" alt
+                                                                class="w-px-40 h-auto rounded-circle" />
+                                                        @else
+                                                            <i class="fa-regular fa-circle-user fs-2"></i>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">

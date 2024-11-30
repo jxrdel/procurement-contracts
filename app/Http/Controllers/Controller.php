@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\PurchaseContract;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -12,7 +13,20 @@ class Controller
 {
     public function index()
     {
-        return view('home');
+        //Get count of all purchase contracts
+        $allpurchasecontractsCount = PurchaseContract::all()->count();
+        // Get Purchase Contracts ending in the next 12 months
+        $nexttwelvemonths = date('Y-m-d', strtotime('+12 months'));
+        $nexttwelvemonths = PurchaseContract::where('end_date', '<=', $nexttwelvemonths)->get();
+
+        //Get Purchase Contracts ending in the next 6 months
+        $nextsixmonths = date('Y-m-d', strtotime('+6 months'));
+        $nextsixmonths = PurchaseContract::where('end_date', '<=', $nextsixmonths)->get();
+
+        //Get Purchase Contracts ending in the next 3 months
+        $nextthreemonths = date('Y-m-d', strtotime('+3 months'));
+        $nextthreemonths = PurchaseContract::where('end_date', '<=', $nextthreemonths)->get();
+        return view('dashboard', compact('allpurchasecontractsCount', 'nexttwelvemonths', 'nextsixmonths', 'nextthreemonths'));
     }
 
     public function logout()

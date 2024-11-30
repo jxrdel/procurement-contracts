@@ -67,7 +67,7 @@ class CreatePurchaseContract extends Component
                 'end_date.required_if' => 'The end date field is required when contract type is expires.',
                 'end_date.after' => 'The end date must be a date after start date.',
                 'notifiedusers.min' => 'Please select at least 1 user to be notified.',
-                'notifications.min' => 'Please select at least 1 notification.',
+                'notifications.min' => 'Please add at least 1 notification.',
             ]
         );
 
@@ -128,6 +128,12 @@ class CreatePurchaseContract extends Component
             return;
         } else if ($this->is_custom_notification && ($this->notification_message == null || trim($this->notification_message) == '')) {
             $this->dispatch('show-alert', message: "Please enter a notification message");
+            return;
+        } else if ($this->notification_date < $this->start_date) {
+            $this->dispatch('show-alert', message: "Notification date must be after the contract start date");
+            return;
+        } else if ($this->notification_date > $this->end_date) {
+            $this->dispatch('show-alert', message: "Notification date must be before the contract end date");
             return;
         }
 
