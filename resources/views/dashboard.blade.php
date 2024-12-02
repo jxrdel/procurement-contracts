@@ -104,8 +104,8 @@
                                         @foreach ($nexttwelvemonths as $contract)
                                             <tr>
                                                 <td>{{ $contract->purchase->name }}</td>
-                                                <td>{{ $contract->start_date }}</td>
-                                                <td>{{ $contract->end_date }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($contract->start_date)->format('d/m/Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}</td>
                                                 <td class="text-center">
                                                     <a href="{{ route('purchase-contracts.view', $contract->id) }}"
                                                         class="btn btn-primary btn-sm">View</a>
@@ -144,8 +144,8 @@
                                     @foreach ($nextsixmonths as $contract)
                                         <tr>
                                             <td>{{ $contract->purchase->name }}</td>
-                                            <td>{{ $contract->start_date }}</td>
-                                            <td>{{ $contract->end_date }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($contract->start_date)->format('d/m/Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('purchase-contracts.view', $contract->id) }}"
                                                     class="btn btn-primary btn-sm">View</a>
@@ -186,8 +186,9 @@
                                         @foreach ($nextthreemonths as $contract)
                                             <tr>
                                                 <td>{{ $contract->purchase->name }}</td>
-                                                <td>{{ $contract->start_date }}</td>
-                                                <td>{{ $contract->end_date }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($contract->start_date)->format('d/m/Y') }}
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}</td>
                                                 <td class="text-center">
                                                     <a href="{{ route('purchase-contracts.view', $contract->id) }}"
                                                         class="btn btn-primary btn-sm">View</a>

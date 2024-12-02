@@ -33,6 +33,7 @@ class CreateUserModal extends Component
             'lname' => 'required',
             'username' => 'required|unique:users,username',
             'email' => 'required|email',
+            'role_id' => 'required',
         ]);
 
         User::create([
