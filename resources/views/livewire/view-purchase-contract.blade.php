@@ -1,4 +1,26 @@
+@assets
+    <!-- default styles -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all"
+        rel="stylesheet" type="text/css" />
+
+    <!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all"
+        rel="stylesheet" type="text/css" />
+
+    <!-- important mandatory libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+        type="text/javascript"></script>
+
+    <!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+    <!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+@endassets
+
 <div x-data="{
+    rating: $wire.entangle('rating'),
     contract_type: $wire.entangle('contract_type'),
     is_custom_notification: $wire.entangle('is_custom_notification'),
 
@@ -37,7 +59,9 @@
                         </div>
                     </div>
 
-                    <div class="col">
+                    <div class="col" wire:ignore>
+                        <input wire:model="rating" id="input-4" name="input-4" class="rating rating-loading"
+                            data-show-clear="false" data-show-caption="true" onchange="setRating(this.value)">
                     </div>
                 </div>
 
@@ -313,6 +337,16 @@
         </div>
     </form>
 </div>
+
+@section('scripts')
+    <script>
+        function setRating(value) {
+            Livewire.dispatch('set-rating', {
+                rating: value
+            });
+        }
+    </script>
+@endsection
 
 @script
     <script>

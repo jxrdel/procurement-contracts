@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Faker\Core\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -24,6 +25,7 @@ class ViewPurchaseContract extends Component
     public $purchase_id;
     public $purchases;
     public $employees;
+    public $rating;
     public $file_number;
     public $file_name;
     public $contract_type = 'expires';
@@ -56,6 +58,7 @@ class ViewPurchaseContract extends Component
 
         $this->contract = PurchaseContract::find($id);
         $this->purchase_id = $this->contract->purchase_id;
+        $this->rating = $this->contract->rating;
         $this->file_number = $this->contract->file_number;
         $this->file_name = $this->contract->file_name;
         $this->contract_type = $this->contract->is_continuous ? 'continuous' : 'expires';
@@ -83,7 +86,6 @@ class ViewPurchaseContract extends Component
 
     public function save()
     {
-        // dd($this->notifications);
         $this->is_continuous = $this->contract_type == 'continuous' ? true : false;
 
         $this->contract->update([
@@ -94,7 +96,7 @@ class ViewPurchaseContract extends Component
             'end_date' => $this->end_date,
             'note' => $this->note,
             'cost' => $this->cost,
-            'is_continuous' => $this->is_continuous,
+            'rating' => $this->rating,
             'updated_by' => Auth::user()->username,
         ]);
 
@@ -165,7 +167,7 @@ class ViewPurchaseContract extends Component
 
     public function updating($name, $value)
     {
-        if ($name == 'editedAssignedTo' || $name == 'editedNotifiedUsers' || $name == 'upload') {
+        if ($name == 'editedAssignedTo' || $name == 'editedNotifiedUsers' || $name == 'upload' || $name == 'rating') {
             $this->skipRender();
         } else {
             $this->dispatch('preserveScroll');
@@ -213,5 +215,11 @@ class ViewPurchaseContract extends Component
         $this->dispatch('preserveScroll');
 
         $this->dispatch('show-message', message: 'File deleted successfully');
+    }
+
+    #[On('set-rating')]
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
     }
 }

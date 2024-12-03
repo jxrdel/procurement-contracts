@@ -18,6 +18,7 @@ class PurchaseContract extends Model
         'note',
         'cost',
         'is_continuous',
+        'rating',
         'created_by',
         'updated_by',
     ];

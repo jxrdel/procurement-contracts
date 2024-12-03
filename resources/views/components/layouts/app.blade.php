@@ -55,6 +55,8 @@
             opacity: 1;
         }
     </style>
+
+    @yield('styles')
 </head>
 
 <body>
