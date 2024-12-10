@@ -58,7 +58,6 @@
                     [0, 'desc']
                 ],
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": "{{ route('getexternalcontacts') }}",
                     "type": "GET"

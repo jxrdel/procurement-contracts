@@ -74,7 +74,6 @@
                     [0, 'desc']
                 ],
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": "{{ route('getexternalcompanies') }}",
                     "type": "GET"

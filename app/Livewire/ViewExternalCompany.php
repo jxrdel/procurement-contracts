@@ -19,6 +19,7 @@ class ViewExternalCompany extends Component
     public $phone1;
     public $phone2;
     public $note;
+    public $rating;
     public $is_active;
 
     //Contact Information
@@ -52,6 +53,7 @@ class ViewExternalCompany extends Component
         $this->note = $this->company->note;
         $this->is_active = $this->company->is_active == 1 ? true : false;
         $this->contracts = $this->company->contracts;
+        $this->rating = $this->company->averageRating;
     }
 
     public function save()

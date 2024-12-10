@@ -35,8 +35,8 @@
                         <i class="ri-arrow-left-circle-line me-1"></i> Back
                     </a>
                     <h1 class="h3 mb-0 text-gray-800" style="flex: 1; text-align: center;">
-                        <strong style="margin-right: 90px"><i class="fa-solid fa-file-invoice-dollar"></i> &nbsp; Edit
-                            Purchase</strong>
+                        <strong style="margin-right: 90px"><i class="fa-solid fa-file-invoice-dollar"></i>
+                            &nbsp;{{ $this->contract->purchase->name }}</strong>
                     </h1>
                 </div>
 

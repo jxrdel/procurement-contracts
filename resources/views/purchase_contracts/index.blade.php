@@ -26,6 +26,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Company</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th style="width: 20%">Actions</th>
@@ -55,7 +56,6 @@
                     [0, 'desc']
                 ],
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": "{{ route('getpurchasecontracts') }}",
                     "type": "GET"
@@ -65,12 +65,16 @@
                         name: 'purchase.name'
                     },
                     {
-                        data: 'start_date',
-                        name: 'start_date'
+                        data: 'company_name',
+                        name: 'company_name'
                     },
                     {
-                        data: 'end_date',
-                        name: 'end_date'
+                        data: 'formatted_start_date',
+                        name: 'formatted_start_date'
+                    },
+                    {
+                        data: 'formatted_end_date',
+                        name: 'formatted_end_date'
                     },
                     {
                         data: null,

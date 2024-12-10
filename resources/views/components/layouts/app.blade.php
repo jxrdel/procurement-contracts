@@ -176,9 +176,8 @@
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-4">
-                                <a class="github-button"
-                                    href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
+                                <a class="github-button" href="#" data-icon="octicon-star" data-size="large"
+                                    data-show-count="true"
                                     aria-label="Star themeselection/materio-bootstrap-html-admin-template-free on GitHub">{{ Auth::user()->fname }}
                                     {{ Auth::user()->lname }}</a>
                             </li>

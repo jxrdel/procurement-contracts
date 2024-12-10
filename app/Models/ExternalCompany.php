@@ -45,4 +45,17 @@ class ExternalCompany extends Model
             'id'                   // Local key on purchases table
         );
     }
+
+    public function getAverageRatingAttribute()
+    {
+        $total = 0;
+        $count = 0;
+        foreach ($this->contracts as $contract) { //Include only contracts with ratings
+            if ($contract->rating) {
+                $total += $contract->rating;
+                $count++;
+            }
+        }
+        return $count > 0 ? $total / $count : 0;
+    }
 }

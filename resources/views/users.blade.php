@@ -58,7 +58,6 @@
                     [0, 'asc']
                 ],
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": "{{ route('getusers') }}",
                     "type": "GET"

@@ -41,7 +41,6 @@
                     [0, 'desc']
                 ],
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": "{{ route('getnotifications') }}",
                     "type": "GET"

@@ -29,6 +29,16 @@ class PurchaseController extends Controller
     public function getPurchaseContracts()
     {
         $purchases = PurchaseContract::with('purchase')->get();
-        return DataTables::of($purchases)->make(true);
+        return DataTables::of($purchases)
+            ->addColumn('company_name', function ($purchase) {
+                return $purchase->purchase->company->name ?? 'N/A';
+            })
+            ->addColumn('formatted_start_date', function ($purchase) {
+                return date('d/m/Y', strtotime($purchase->start_date));
+            })
+            ->addColumn('formatted_end_date', function ($purchase) {
+                return date('d/m/Y', strtotime($purchase->end_date));
+            })
+            ->make(true);
     }
 }
